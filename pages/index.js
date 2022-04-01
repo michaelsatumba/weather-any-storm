@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 export default function Home() {
 	const [city, setCity] = useState(null);
 	const [temp, setTemp] = useState(null);
-	const [search, setSearch] = useState('San Francisco');
+	const [search, setSearch] = useState('');
 	// const findMe = () => {
 	// 	const success = (position) => {
 	// 		const latitude = position.coords.latitude;
@@ -36,13 +36,18 @@ export default function Home() {
 			fetch(weatherURL)
 				.then((res) => res.json())
 				.then((data) => {
+					// alert(data.name);
 					console.log(data);
 					setCity(data.name);
-					setTemp(Math.floor(data.main.temp));
+					// setTemp(Math.floor(data.main.temp));
 				});
 		};
 
-		const error = (showError) => {};
+		const error = (showError) => {
+			alert('hello');
+			setCity('hello');
+			setTemp(21);
+		};
 
 		navigator.geolocation.getCurrentPosition(success, error);
 	};
