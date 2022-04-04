@@ -10,10 +10,15 @@ export default function Home() {
 	const [description, setDescription] = useState(null);
 	const [windSpeed, setWindSpeed] = useState(null);
 	const [rainPercentage, setRainPercentage] = useState(null);
-	const currentDate = new Date();
 	const [tomorrowTemp, setTomorrowTemp] = useState(null);
 	const [dayAfterTomorrowTemp, setDayAfterTomorrowTemp] = useState(null);
+	const [demo, setDemo] = useState('');
 	const [search, setSearch] = useState('');
+
+	const currentDate = new Date();
+	const minute = 1000 * 60;
+	const hour = minute * 60;
+	const day = hour * 24;
 
 	const iconLink = `http://openweathermap.org/img/wn/${weatherIcon}@4x.png`;
 	const iconLinkTomorrow = `http://openweathermap.org/img/wn/${weatherIconTomorrow}@4x.png`;
@@ -59,6 +64,13 @@ export default function Home() {
 				.then((res) => res.json())
 				.then((data) => {
 					console.log(data);
+					// console.log(currentDate);
+					// console.log(data.daily[1].dt);
+					setDemo(data.daily[1].dt);
+					console.log(new Date(demo).toString());
+					// console.log(demo.getHours());
+					// console.log(demo.toString());
+
 					setWeatherIcon(data.current.weather[0].icon);
 					setTemp(Math.floor(data.current.temp));
 					setDescription(data.current.weather[0].main);
