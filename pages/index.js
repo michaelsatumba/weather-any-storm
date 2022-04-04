@@ -158,6 +158,8 @@ export default function Home() {
 			{/* <button type="button" onClick={handleSubmit}>
 				search
 			</button> */}
+
+			<p>Exercise</p>
 		</div>
 	);
 }
