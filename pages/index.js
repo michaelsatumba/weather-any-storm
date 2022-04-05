@@ -24,6 +24,8 @@ export default function Home() {
 	const iconLinkTomorrow = `http://openweathermap.org/img/wn/${weatherIconTomorrow}@4x.png`;
 	const iconLinkDayAfterTomorrow = `http://openweathermap.org/img/wn/${weatherIconDayAfterTomorrow}@4x.png`;
 
+	const exercises = ['Go run outside', 'Do some pushups inside'];
+
 	// const findMe = () => {
 	// 	const success = (position) => {
 	// 		const latitude = position.coords.latitude;
@@ -170,8 +172,9 @@ export default function Home() {
 			{/* <button type="button" onClick={handleSubmit}>
 				search
 			</button> */}
-
-			<p>Exercise</p>
+			<div className="flex justify-center py-4">
+				<p>{exercises[0]}</p>
+			</div>
 		</div>
 	);
 }
