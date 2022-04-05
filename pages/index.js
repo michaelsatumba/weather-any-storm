@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import Link from 'next/link';
 
 export default function Home() {
 	const [city, setCity] = useState(null);
@@ -12,6 +13,7 @@ export default function Home() {
 	const [rainPercentage, setRainPercentage] = useState(null);
 	const [tomorrowTemp, setTomorrowTemp] = useState(null);
 	const [dayAfterTomorrowTemp, setDayAfterTomorrowTemp] = useState(null);
+	const [exercise, setExercise] = useState('');
 	const [demo, setDemo] = useState('');
 	const [search, setSearch] = useState('');
 
@@ -23,8 +25,6 @@ export default function Home() {
 	const iconLink = `http://openweathermap.org/img/wn/${weatherIcon}@4x.png`;
 	const iconLinkTomorrow = `http://openweathermap.org/img/wn/${weatherIconTomorrow}@4x.png`;
 	const iconLinkDayAfterTomorrow = `http://openweathermap.org/img/wn/${weatherIconDayAfterTomorrow}@4x.png`;
-
-	const exercises = ['Go run outside', 'Do some pushups inside'];
 
 	// const findMe = () => {
 	// 	const success = (position) => {
@@ -66,12 +66,6 @@ export default function Home() {
 				.then((res) => res.json())
 				.then((data) => {
 					console.log(data);
-					// console.log(currentDate);
-					// console.log(data.daily[3].dt);
-					// setDemo(data.daily[1].dt);
-					// console.log(new Date(demo).toString());
-					// console.log(demo.getHours());
-					// console.log(demo.toString());
 
 					const tomorrow = new Date(data.daily[2].dt);
 					// console.log(tomorrow);
@@ -99,6 +93,12 @@ export default function Home() {
 					setWeatherIconTomorrow(data.hourly[23].weather[0].icon);
 					setDayAfterTomorrowTemp(Math.floor(data.hourly[47].temp));
 					setWeatherIconDayAfterTomorrow(data.hourly[47].weather[0].icon);
+
+					if (rainPercentage === 0) {
+						setExercise('Go take a walk');
+					} else {
+						setExercise('Stay inside and do some pushups');
+					}
 				});
 		};
 
@@ -133,7 +133,9 @@ export default function Home() {
 					<button>🔽</button>
 				</div>
 
-				<button>🗓️</button>
+				<Link href="/forecast">
+					<button>🗓️</button>
+				</Link>
 			</div>
 			<div className="flex justify-center">
 				<img className="" src={iconLink}></img>
@@ -189,16 +191,8 @@ export default function Home() {
 				search
 			</button> */}
 			<div className="flex justify-center py-4">
-				<p>{exercises[0]}</p>
+				<p>{exercise}</p>
 			</div>
 		</div>
 	);
 }
-
-/*
-TO DO
-1 Screen
-1) Weather 
-Weather API
-
-*/
