@@ -67,11 +67,27 @@ export default function Home() {
 				.then((data) => {
 					console.log(data);
 					// console.log(currentDate);
-					// console.log(data.daily[1].dt);
-					setDemo(data.daily[1].dt);
-					console.log(new Date(demo).toString());
+					// console.log(data.daily[3].dt);
+					// setDemo(data.daily[1].dt);
+					// console.log(new Date(demo).toString());
 					// console.log(demo.getHours());
 					// console.log(demo.toString());
+
+					const tomorrow = new Date(data.daily[2].dt);
+					// console.log(tomorrow);
+					const tomorrowDate = tomorrow.getUTCDay();
+					// console.log(tomorrowDate);
+					const days = [
+						'Sunday',
+						'Monday',
+						'Tuesday',
+						'Wednesday',
+						'Thursday',
+						'Friday',
+						'Saturday',
+					];
+					const tomorrowDay = days[tomorrowDate];
+					// console.log(tomorrowDay);
 
 					setWeatherIcon(data.current.weather[0].icon);
 					setTemp(Math.floor(data.current.temp));
