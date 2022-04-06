@@ -67,10 +67,9 @@ export default function Home() {
 				.then((data) => {
 					console.log(data);
 
-					const tomorrow = new Date(data.daily[2].dt);
-					// console.log(tomorrow);
-					const tomorrowDate = tomorrow.getUTCDay();
-					// console.log(tomorrowDate);
+					let dt = data.daily[7].dt;
+
+					let date = new Date(dt * 1000);
 					const days = [
 						'Sunday',
 						'Monday',
@@ -80,8 +79,10 @@ export default function Home() {
 						'Friday',
 						'Saturday',
 					];
-					const tomorrowDay = days[tomorrowDate];
-					// console.log(tomorrowDay);
+					let today = days[date.getDay()];
+					alert(date);
+					alert(date.getUTCDay());
+					alert(today);
 
 					setWeatherIcon(data.current.weather[0].icon);
 					setTemp(Math.floor(data.current.temp));
