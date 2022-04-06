@@ -1,7 +1,5 @@
 import Link from 'next/link';
-import React from 'react';
 import { useState, useEffect } from 'react';
-import { useRouter } from 'next/router';
 
 function forecast() {
 	const [city, setCity] = useState(null);
