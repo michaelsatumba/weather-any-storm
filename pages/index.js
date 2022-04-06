@@ -110,7 +110,7 @@ export default function Home() {
 					<button>🔽</button>
 				</div>
 
-				<Link href="/forecast">
+				<Link href="/Forecast">
 					<button>🗓️</button>
 				</Link>
 			</div>
@@ -167,7 +167,7 @@ export default function Home() {
 			{/* <button type="button" onClick={handleSubmit}>
 				search
 			</button> */}
-			<div className="flex justify-center py-4">
+			<div className="flex justify-center pt-4">
 				<p>{exercise}</p>
 			</div>
 		</div>
