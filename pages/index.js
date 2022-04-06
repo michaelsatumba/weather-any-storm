@@ -3,8 +3,8 @@ import Link from 'next/link';
 
 export default function Home() {
 	const [city, setCity] = useState(null);
-	const [weatherIcon, setWeatherIcon] = useState(null);
-	const [weatherIconTomorrow, setWeatherIconTomorrow] = useState(null);
+	const [weatherIcon, setWeatherIcon] = useState('10d');
+	const [weatherIconTomorrow, setWeatherIconTomorrow] = useState('10d');
 	const [weatherIconDayAfterTomorrow, setWeatherIconDayAfterTomorrow] =
 		useState(null);
 	const [temp, setTemp] = useState(null);
@@ -18,34 +18,10 @@ export default function Home() {
 	const [search, setSearch] = useState('');
 
 	const currentDate = new Date();
-	const minute = 1000 * 60;
-	const hour = minute * 60;
-	const day = hour * 24;
 
 	const iconLink = `http://openweathermap.org/img/wn/${weatherIcon}@4x.png`;
 	const iconLinkTomorrow = `http://openweathermap.org/img/wn/${weatherIconTomorrow}@4x.png`;
 	const iconLinkDayAfterTomorrow = `http://openweathermap.org/img/wn/${weatherIconDayAfterTomorrow}@4x.png`;
-
-	// const findMe = () => {
-	// 	const success = (position) => {
-	// 		const latitude = position.coords.latitude;
-	// 		const longitude = position.coords.longitude;
-	// 		const geoURL =
-	// 			'https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${latitude}&longitude=${longitude}&localityLanguage=en';
-
-	// 		fetch(geoURL)
-	// 			.then((res) => res.json())
-	// 			.then((data) => {
-	// 				setCity(data.city);
-	// 			});
-	// 	};
-
-	// 	const error = (showError) => {
-	// 		setCity('I will find you');
-	// 	};
-
-	// 	navigator.geolocation.getCurrentPosition(success, error);
-	// };
 
 	const weather = () => {
 		const success = (position) => {
@@ -80,9 +56,9 @@ export default function Home() {
 						'Saturday',
 					];
 					let today = days[date.getDay()];
-					alert(date);
-					alert(date.getUTCDay());
-					alert(today);
+					// alert(date);
+					// alert(date.getUTCDay());
+					// alert(today);
 
 					setWeatherIcon(data.current.weather[0].icon);
 					setTemp(Math.floor(data.current.temp));
@@ -95,7 +71,7 @@ export default function Home() {
 					setDayAfterTomorrowTemp(Math.floor(data.hourly[47].temp));
 					setWeatherIconDayAfterTomorrow(data.hourly[47].weather[0].icon);
 
-					if (rainPercentage === 0) {
+					if (rainPercentage < 10) {
 						setExercise('Go take a walk');
 					} else {
 						setExercise('Stay inside and do some pushups');
@@ -157,7 +133,7 @@ export default function Home() {
 				<div>
 					<p className="pb-5">Today</p>
 					<div className="bg-teal-100 rounded-lg flex flex-col items-center">
-						<p className="text-gray-500">{currentDate.getHours()}</p>
+						<p className="text-gray-500">{currentDate.getHours()}00</p>
 						<img className="" src={iconLink}></img>
 						<p className="text-lg">{temp}°</p>
 					</div>
@@ -165,7 +141,7 @@ export default function Home() {
 				<div>
 					<p className="pb-5">Tomorrow</p>
 					<div className="bg-teal-100 rounded-lg flex flex-col items-center">
-						<p className="text-gray-500">{currentDate.getHours()}</p>
+						<p className="text-gray-500">{currentDate.getHours()}00</p>
 						<img className="" src={iconLinkTomorrow}></img>
 						<p className="text-lg">{tomorrowTemp}°</p>
 					</div>
@@ -173,7 +149,7 @@ export default function Home() {
 				<div>
 					<p className="pb-5">Day After</p>
 					<div className="bg-teal-100 rounded-lg flex flex-col items-center">
-						<p className="text-gray-500">{currentDate.getHours()}</p>
+						<p className="text-gray-500">{currentDate.getHours()}00</p>
 						<img className="" src={iconLinkDayAfterTomorrow}></img>
 						<p className="text-lg">{dayAfterTomorrowTemp}°</p>
 					</div>

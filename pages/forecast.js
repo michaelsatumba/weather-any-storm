@@ -5,29 +5,25 @@ import { useRouter } from 'next/router';
 
 function forecast() {
 	const [city, setCity] = useState(null);
-	const [weatherIcon, setWeatherIcon] = useState(null);
+	const [weatherIcon, setWeatherIcon] = useState('10d');
 	const [weatherIconTomorrow, setWeatherIconTomorrow] = useState(null);
-	const [weatherIconDayAfterTomorrow, setWeatherIconDayAfterTomorrow] =
-		useState(null);
+
+	const [alerts, setAlerts] = useState('');
+	const [minutes, setMinutes] = useState('');
+	const [today, setToday] = useState('');
+	const [tomorrow, setTomorrow] = useState('');
+	const [twoTomorrow, setTwoTomorrow] = useState('');
+	const [threeTomorrow, setThreeTomorrow] = useState('');
+	const [fourTomorrow, setFourTomorrow] = useState('');
+	const [fiveTomorrow, setFiveTomorrow] = useState('');
+	const [sixTomorrow, setSixTomorrow] = useState('');
+
 	const [temp, setTemp] = useState(null);
-	const [description, setDescription] = useState(null);
-	const [windSpeed, setWindSpeed] = useState(null);
-	const [rainPercentage, setRainPercentage] = useState(null);
 	const [tomorrowTemp, setTomorrowTemp] = useState(null);
-	const [dayAfterTomorrowTemp, setDayAfterTomorrowTemp] = useState(null);
 	const [exercise, setExercise] = useState('');
-	const [demo, setDemo] = useState('');
-	const [search, setSearch] = useState('');
 
-	const currentDate = new Date();
-	const minute = 1000 * 60;
-	const hour = minute * 60;
-	const day = hour * 24;
-
-	const iconLink = `http://openweathermap.org/img/wn/${weatherIcon}@4x.png`;
-	const iconLinkTomorrow = `http://openweathermap.org/img/wn/${weatherIconTomorrow}@4x.png`;
-	const iconLinkDayAfterTomorrow = `http://openweathermap.org/img/wn/${weatherIconDayAfterTomorrow}@4x.png`;
-	const iconSmall = `http://openweathermap.org/img/wn/${weatherIconDayAfterTomorrow}.png`;
+	const iconSmallLink = `http://openweathermap.org/img/wn/${weatherIcon}@2x.png`;
+	const iconSmallestLink = `http://openweathermap.org/img/wn/${weatherIcon}.png`;
 
 	const weather = () => {
 		const success = (position) => {
@@ -49,10 +45,13 @@ function forecast() {
 				.then((data) => {
 					console.log(data);
 
-					const tomorrow = new Date(data.daily[2].dt);
-					// console.log(tomorrow);
-					const tomorrowDate = tomorrow.getUTCDay();
-					// console.log(tomorrowDate);
+					if (data.alerts == null) {
+						console.log('no alerts');
+					}
+
+					const todayAlerts = new Date(data.alerts[0].start);
+					const todayMinutes = todayAlerts.getMinutes();
+
 					const days = [
 						'Sunday',
 						'Monday',
@@ -62,25 +61,46 @@ function forecast() {
 						'Friday',
 						'Saturday',
 					];
-					const tomorrowDay = days[tomorrowDate];
-					// console.log(tomorrowDay);
+
+					const abDays = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
+
+					// let date = new Date(dt * 1000);
+
+					const todayTarget =
+						abDays[new Date(data.daily[0].dt * 1000).getUTCDay()];
+
+					const tomorrowTarget =
+						abDays[new Date(data.daily[1].dt * 1000).getUTCDay()];
+
+					const twoTomorrowTarget =
+						abDays[new Date(data.daily[2].dt * 1000).getUTCDay()];
+
+					const threeTomorrowTarget =
+						abDays[new Date(data.daily[3].dt * 1000).getUTCDay()];
+
+					const fourTomorrowTarget =
+						abDays[new Date(data.daily[4].dt * 1000).getUTCDay()];
+
+					const fiveTomorrowTarget =
+						abDays[new Date(data.daily[5].dt * 1000).getUTCDay()];
+
+					const sixTomorrowTarget =
+						abDays[new Date(data.daily[6].dt * 1000).getUTCDay()];
 
 					setWeatherIcon(data.current.weather[0].icon);
 					setTemp(Math.floor(data.current.temp));
-					setDescription(data.current.weather[0].main);
-					setWindSpeed(Math.floor(data.current.wind_speed));
-					setRainPercentage(data.hourly[0].pop);
 					setTomorrowTemp(Math.floor(data.hourly[23].temp));
-					setDayAfterTomorrowTemp(Math.floor(data.hourly[47].temp));
 					setWeatherIconTomorrow(data.hourly[23].weather[0].icon);
-					setDayAfterTomorrowTemp(Math.floor(data.hourly[47].temp));
-					setWeatherIconDayAfterTomorrow(data.hourly[47].weather[0].icon);
 
-					if (rainPercentage === 0) {
-						setExercise('Go take a walk');
-					} else {
-						setExercise('Stay inside and do some pushups');
-					}
+					setAlerts(data.alerts[0].description);
+					setMinutes(todayMinutes);
+					setToday(todayTarget);
+					setTomorrow(tomorrowTarget);
+					setTwoTomorrow(twoTomorrowTarget);
+					setThreeTomorrow(threeTomorrowTarget);
+					setFourTomorrow(fourTomorrowTarget);
+					setFiveTomorrow(fiveTomorrowTarget);
+					setSixTomorrow(sixTomorrowTarget);
 				});
 		};
 
@@ -101,29 +121,96 @@ function forecast() {
 	}, []);
 
 	return (
-		<div>
-			<div className="flex space-x-32">
+		<div className="h-screen bg-orange-400 text-white">
+			<div className="flex space-x-32 pt-16">
 				<Link href="/">
-					<p>back</p>
+					<div className="px-4">
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							className="h-6 w-6"
+							fill="none"
+							viewBox="0 0 24 24"
+							stroke="currentColor"
+							strokeWidth={2}
+						>
+							<path
+								strokeLinecap="round"
+								strokeLinejoin="round"
+								d="M10 19l-7-7m0 0l7-7m-7 7h18"
+							/>
+						</svg>
+					</div>
 				</Link>
-				<p>{city}</p>
+				<p className="font-bold">{city}</p>
 			</div>
-			<div>
+			<div className="flex flex-col rounded-lg bg-gray-300 text-black my-10 mx-10 h-28 ">
 				<div className="flex justify-end">
-					<img className="" src={iconLink}></img>
+					<img className="w-10" src={iconSmallLink}></img>
 				</div>
-				<p>15 minutes ago</p>
-				<p>Alert</p>
+				<p>{minutes} minutes ago</p>
+				<p className="text-xs truncate">{alerts}</p>
+			</div>
+			<div className="mb-10 px-4">
+				<p className="font-bold">This week</p>
 			</div>
 			<div>
-				<p>This week</p>
-			</div>
-			<div>
-				<div>
-					<p>Sunday</p>
-					<p>Highest Temp</p>
-					<p>Lowest Temp</p>
-					<img className="" src={iconSmall}></img>
+				<div className="px-4 flex flex-col space-y-10">
+					<div className="flex justify-evenly">
+						<p className="text-gray-600">{today}</p>
+						<div className="flex">
+							<p>28°&nbsp;&nbsp;&nbsp;</p>
+							<p className="text-gray-700">21°</p>
+						</div>
+						<img className=" h-7 w-7" src={iconSmallestLink}></img>
+					</div>
+					<div className="flex justify-evenly">
+						<p className="text-gray-600">{tomorrow}</p>
+						<div className="flex">
+							<p>28°&nbsp;&nbsp;&nbsp;</p>
+							<p className="text-gray-700">21°</p>
+						</div>
+						<img className=" h-7 w-7" src={iconSmallestLink}></img>
+					</div>
+					<div className="flex justify-evenly">
+						<p className="text-gray-600">{twoTomorrow}</p>
+						<div className="flex">
+							<p>28°&nbsp;&nbsp;&nbsp;</p>
+							<p className="text-gray-700">21°</p>
+						</div>
+						<img className=" h-7 w-7" src={iconSmallestLink}></img>
+					</div>
+					<div className="flex justify-evenly">
+						<p className="text-gray-600">{threeTomorrow}</p>
+						<div className="flex">
+							<p>28°&nbsp;&nbsp;&nbsp;</p>
+							<p className="text-gray-700">21°</p>
+						</div>
+						<img className=" h-7 w-7" src={iconSmallestLink}></img>
+					</div>
+					<div className="flex justify-evenly">
+						<p className="text-gray-600">{fourTomorrow}</p>
+						<div className="flex">
+							<p>28°&nbsp;&nbsp;&nbsp;</p>
+							<p className="text-gray-700">21°</p>
+						</div>
+						<img className=" h-7 w-7" src={iconSmallestLink}></img>
+					</div>
+					<div className="flex justify-evenly">
+						<p className="text-gray-600">{fiveTomorrow}</p>
+						<div className="flex">
+							<p>28°&nbsp;&nbsp;&nbsp;</p>
+							<p className="text-gray-700">21°</p>
+						</div>
+						<img className=" h-7 w-7" src={iconSmallestLink}></img>
+					</div>
+					<div className="flex justify-evenly">
+						<p className="text-gray-600">{sixTomorrow}</p>
+						<div className="flex">
+							<p>28°&nbsp;&nbsp;&nbsp;</p>
+							<p className="text-gray-700">21°</p>
+						</div>
+						<img className=" h-7 w-7" src={iconSmallestLink}></img>
+					</div>
 				</div>
 			</div>
 		</div>
