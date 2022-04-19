@@ -110,7 +110,7 @@ export default function Home() {
 					<button>🔽</button>
 				</div>
 
-				<Link href="/Forecast">
+				<Link href="/forecast">
 					<button>🗓️</button>
 				</Link>
 			</div>
