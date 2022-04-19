@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
 
-function forecast() {
+function Forecast() {
 	const [city, setCity] = useState(null);
 	const [weatherIcon, setWeatherIcon] = useState('10d');
 	const [weatherIconTomorrow, setWeatherIconTomorrow] = useState('10d');
@@ -260,4 +260,4 @@ function forecast() {
 	);
 }
 
-export default forecast;
+export default Forecast;
