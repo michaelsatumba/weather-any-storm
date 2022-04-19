@@ -173,3 +173,6 @@ export default function Home() {
 		</div>
 	);
 }
+
+// TO DO
+// Search for a city
