@@ -4,7 +4,13 @@ import { useState, useEffect } from 'react';
 function Forecast() {
 	const [city, setCity] = useState(null);
 	const [weatherIcon, setWeatherIcon] = useState('10d');
-	const [weatherIconTomorrow, setWeatherIconTomorrow] = useState(null);
+	const [weatherIconTomorrow, setWeatherIconTomorrow] = useState('10d');
+	const [weatherIconTomorrowTwo, setWeatherIconTomorrowTwo] = useState('10d');
+	const [weatherIconTomorrowThree, setWeatherIconTomorrowThree] =
+		useState('10d');
+	const [weatherIconTomorrowFour, setWeatherIconTomorrowFour] = useState('10d');
+	const [weatherIconTomorrowFive, setWeatherIconTomorrowFive] = useState('10d');
+	const [weatherIconTomorrowSix, setWeatherIconTomorrowSix] = useState('10d');
 
 	const [alerts, setAlerts] = useState('');
 	const [minutes, setMinutes] = useState('');
@@ -18,10 +24,30 @@ function Forecast() {
 
 	const [temp, setTemp] = useState(null);
 	const [tomorrowTemp, setTomorrowTemp] = useState(null);
+	const [twoTomorrowTemp, setTwoTomorrowTemp] = useState(null);
+	const [threeTomorrowTemp, setThreeTomorrowTemp] = useState(null);
+	const [fourTomorrowTemp, setFourTomorrowTemp] = useState(null);
+	const [fiveTomorrowTemp, setFiveTomorrowTemp] = useState(null);
+	const [sixTomorrowTemp, setSixTomorrowTemp] = useState(null);
+
+	const [tempMax, setTempMax] = useState(null);
+	const [tomorrowTempMax, setTomorrowTempMax] = useState(null);
+	const [twoTomorrowTempMax, setTwoTomorrowTempMax] = useState(null);
+	const [threeTomorrowTempMax, setThreeTomorrowTempMax] = useState(null);
+	const [fourTomorrowTempMax, setFourTomorrowTempMax] = useState(null);
+	const [fiveTomorrowTempMax, setFiveTomorrowTempMax] = useState(null);
+	const [sixTomorrowTempMax, setSixTomorrowTempMax] = useState(null);
+
 	const [exercise, setExercise] = useState('');
 
 	const iconSmallLink = `http://openweathermap.org/img/wn/${weatherIcon}@2x.png`;
-	const iconSmallestLink = `http://openweathermap.org/img/wn/${weatherIcon}.png`;
+	const iconSmallestLink = `http://openweathermap.org/img/wn/${weatherIconTomorrow}.png`;
+	const iconSmallestLinkTomorrow = `http://openweathermap.org/img/wn/${weatherIconTomorrow}.png`;
+	const iconSmallestLinkTwo = `http://openweathermap.org/img/wn/${weatherIconTomorrowTwo}.png`;
+	const iconSmallestLinkThree = `http://openweathermap.org/img/wn/${weatherIconTomorrowThree}.png`;
+	const iconSmallestLinkFour = `http://openweathermap.org/img/wn/${weatherIconTomorrowFour}.png`;
+	const iconSmallestLinkFive = `http://openweathermap.org/img/wn/${weatherIconTomorrowFive}.png`;
+	const iconSmallestLinkSix = `http://openweathermap.org/img/wn/${weatherIconTomorrowSix}.png`;
 
 	const weather = () => {
 		const success = (position) => {
@@ -86,9 +112,28 @@ function Forecast() {
 						abDays[new Date(data.daily[6].dt * 1000).getUTCDay()];
 
 					setWeatherIcon(data.current.weather[0].icon);
-					setTemp(Math.floor(data.current.temp));
-					setTomorrowTemp(Math.floor(data.hourly[23].temp));
-					setWeatherIconTomorrow(data.hourly[23].weather[0].icon);
+					setWeatherIconTomorrow(data.daily[1].weather[0].icon);
+					setWeatherIconTomorrowTwo(data.daily[2].weather[0].icon);
+					setWeatherIconTomorrowThree(data.daily[3].weather[0].icon);
+					setWeatherIconTomorrowFour(data.daily[4].weather[0].icon);
+					setWeatherIconTomorrowFive(data.daily[5].weather[0].icon);
+					setWeatherIconTomorrowSix(data.daily[6].weather[0].icon);
+
+					setTemp(Math.floor(data.daily[0].temp.min));
+					setTomorrowTemp(Math.floor(data.daily[1].temp.min));
+					setTwoTomorrowTemp(Math.floor(data.daily[2].temp.min));
+					setThreeTomorrowTemp(Math.floor(data.daily[3].temp.min));
+					setFourTomorrowTemp(Math.floor(data.daily[4].temp.min));
+					setFiveTomorrowTemp(Math.floor(data.daily[5].temp.min));
+					setSixTomorrowTemp(Math.floor(data.daily[6].temp.min));
+
+					setTempMax(Math.floor(data.daily[0].temp.max));
+					setTomorrowTempMax(Math.floor(data.daily[1].temp.max));
+					setTwoTomorrowTempMax(Math.floor(data.daily[2].temp.max));
+					setThreeTomorrowTempMax(Math.floor(data.daily[3].temp.max));
+					setFourTomorrowTempMax(Math.floor(data.daily[4].temp.max));
+					setFiveTomorrowTempMax(Math.floor(data.daily[5].temp.max));
+					setSixTomorrowTempMax(Math.floor(data.daily[6].temp.max));
 
 					setAlerts(data.alerts[0].description);
 					setMinutes(todayMinutes);
@@ -156,58 +201,58 @@ function Forecast() {
 					<div className="flex justify-evenly">
 						<p className="text-gray-600">{today}</p>
 						<div className="flex">
-							<p>28°&nbsp;&nbsp;&nbsp;</p>
-							<p className="text-gray-700">21°</p>
+							<p>{temp}°&nbsp;&nbsp;&nbsp;</p>
+							<p className="text-gray-700">{tempMax}°</p>
 						</div>
 						<img className=" h-7 w-7" src={iconSmallestLink}></img>
 					</div>
 					<div className="flex justify-evenly">
 						<p className="text-gray-600">{tomorrow}</p>
 						<div className="flex">
-							<p>28°&nbsp;&nbsp;&nbsp;</p>
-							<p className="text-gray-700">21°</p>
+							<p>{tomorrowTemp}°&nbsp;&nbsp;&nbsp;</p>
+							<p className="text-gray-700">{tomorrowTempMax}°</p>
 						</div>
-						<img className=" h-7 w-7" src={iconSmallestLink}></img>
+						<img className=" h-7 w-7" src={iconSmallestLinkTomorrow}></img>
 					</div>
 					<div className="flex justify-evenly">
 						<p className="text-gray-600">{twoTomorrow}</p>
 						<div className="flex">
-							<p>28°&nbsp;&nbsp;&nbsp;</p>
-							<p className="text-gray-700">21°</p>
+							<p>{twoTomorrowTemp}°&nbsp;&nbsp;&nbsp;</p>
+							<p className="text-gray-700">{twoTomorrowTempMax}°</p>
 						</div>
-						<img className=" h-7 w-7" src={iconSmallestLink}></img>
+						<img className=" h-7 w-7" src={iconSmallestLinkTwo}></img>
 					</div>
 					<div className="flex justify-evenly">
 						<p className="text-gray-600">{threeTomorrow}</p>
 						<div className="flex">
-							<p>28°&nbsp;&nbsp;&nbsp;</p>
-							<p className="text-gray-700">21°</p>
+							<p>{threeTomorrowTemp}°&nbsp;&nbsp;&nbsp;</p>
+							<p className="text-gray-700">{threeTomorrowTempMax}°</p>
 						</div>
-						<img className=" h-7 w-7" src={iconSmallestLink}></img>
+						<img className=" h-7 w-7" src={iconSmallestLinkThree}></img>
 					</div>
 					<div className="flex justify-evenly">
 						<p className="text-gray-600">{fourTomorrow}</p>
 						<div className="flex">
-							<p>28°&nbsp;&nbsp;&nbsp;</p>
-							<p className="text-gray-700">21°</p>
+							<p>{fourTomorrowTemp}°&nbsp;&nbsp;&nbsp;</p>
+							<p className="text-gray-700">{fourTomorrowTempMax}°</p>
 						</div>
-						<img className=" h-7 w-7" src={iconSmallestLink}></img>
+						<img className=" h-7 w-7" src={iconSmallestLinkFour}></img>
 					</div>
 					<div className="flex justify-evenly">
 						<p className="text-gray-600">{fiveTomorrow}</p>
 						<div className="flex">
-							<p>28°&nbsp;&nbsp;&nbsp;</p>
-							<p className="text-gray-700">21°</p>
+							<p>{fiveTomorrowTemp}°&nbsp;&nbsp;&nbsp;</p>
+							<p className="text-gray-700">{fiveTomorrowTempMax}°</p>
 						</div>
-						<img className=" h-7 w-7" src={iconSmallestLink}></img>
+						<img className=" h-7 w-7" src={iconSmallestLinkFive}></img>
 					</div>
 					<div className="flex justify-evenly">
 						<p className="text-gray-600">{sixTomorrow}</p>
 						<div className="flex">
-							<p>28°&nbsp;&nbsp;&nbsp;</p>
-							<p className="text-gray-700">21°</p>
+							<p>{sixTomorrowTemp}°&nbsp;&nbsp;&nbsp;</p>
+							<p className="text-gray-700">{sixTomorrowTempMax}°</p>
 						</div>
-						<img className=" h-7 w-7" src={iconSmallestLink}></img>
+						<img className=" h-7 w-7" src={iconSmallestLinkSix}></img>
 					</div>
 				</div>
 			</div>

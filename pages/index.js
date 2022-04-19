@@ -6,7 +6,7 @@ export default function Home() {
 	const [weatherIcon, setWeatherIcon] = useState('10d');
 	const [weatherIconTomorrow, setWeatherIconTomorrow] = useState('10d');
 	const [weatherIconDayAfterTomorrow, setWeatherIconDayAfterTomorrow] =
-		useState(null);
+		useState('10d');
 	const [temp, setTemp] = useState(null);
 	const [description, setDescription] = useState(null);
 	const [windSpeed, setWindSpeed] = useState(null);
