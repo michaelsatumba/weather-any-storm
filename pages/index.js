@@ -16,6 +16,7 @@ export default function Home() {
 	const [exercise, setExercise] = useState('');
 	const [demo, setDemo] = useState('');
 	const [search, setSearch] = useState('');
+	const [open, setOpen] = useState('hidden');
 
 	const currentDate = new Date();
 
@@ -91,11 +92,20 @@ export default function Home() {
 		navigator.geolocation.getCurrentPosition(success, error);
 	};
 
-	// const handleSubmit = (event) => {
-	// 	event.preventDefault();
-	// 	setSearch('');
-	// 	weather();
-	// };
+	const openSearch = () => {
+		if (open == 'hidden') {
+			setOpen(null);
+		} else {
+			setOpen('hidden');
+		}
+	};
+
+	const handleSubmit = (event) => {
+		event.preventDefault();
+		setSearch('');
+		setOpen('hidden');
+		// alert(search);
+	};
 
 	useEffect(() => {
 		weather();
@@ -107,13 +117,42 @@ export default function Home() {
 				<div className="flex space-x-2">
 					<p>📍</p>
 					<p>{city}</p>
-					<button>🔽</button>
+					<button onClick={openSearch}>🔽</button>
 				</div>
 
 				<Link href="/forecast">
 					<button>🗓️</button>
 				</Link>
 			</div>
+
+			<div className={`flex px-16 pt-2 space-x-2 ${open}`}>
+				<form onSubmit={handleSubmit}>
+					<input
+						type="text"
+						className="bg-white text-black"
+						value={search}
+						onChange={(e) => setSearch(e.target.value)}
+					/>
+				</form>
+
+				<button type="button" onClick={handleSubmit}>
+					<svg
+						xmlns="http://www.w3.org/2000/svg"
+						class="h-6 w-6"
+						fill="none"
+						viewBox="0 0 24 24"
+						stroke="currentColor"
+						stroke-width="2"
+					>
+						<path
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+						/>
+					</svg>
+				</button>
+			</div>
+
 			<div className="flex justify-center">
 				<img className="" src={iconLink}></img>
 			</div>
@@ -155,18 +194,7 @@ export default function Home() {
 					</div>
 				</div>
 			</div>
-			{/* <form onSubmit={handleSubmit}>
-				<input
-					type="text"
-					className="bg-black text-white"
-					value={search}
-					onChange={(e) => setSearch(e.target.value)}
-				/>
-			</form> */}
 
-			{/* <button type="button" onClick={handleSubmit}>
-				search
-			</button> */}
 			<div className="flex justify-center pt-4">
 				<p>{exercise}</p>
 			</div>
@@ -176,3 +204,4 @@ export default function Home() {
 
 // TO DO
 // Search for a city
+// City to coordinates
