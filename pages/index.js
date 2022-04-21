@@ -18,17 +18,25 @@ export default function Home() {
 	const [search, setSearch] = useState('');
 	const [open, setOpen] = useState('hidden');
 
+	// const [lat, setLat] = useState(position.coords.latitude);
+	// const [lon, setLon] = useState(position.coords.longitude);
+
 	const currentDate = new Date();
 
 	const iconLink = `http://openweathermap.org/img/wn/${weatherIcon}@4x.png`;
 	const iconLinkTomorrow = `http://openweathermap.org/img/wn/${weatherIconTomorrow}@4x.png`;
 	const iconLinkDayAfterTomorrow = `http://openweathermap.org/img/wn/${weatherIconDayAfterTomorrow}@4x.png`;
 
+	const apiKey = 'bf63e57f6ca8565522bf2301f33f5d33';
+	const searchApiKey = 'a53e7014f41f2cd34a0e24f9dc2c5737';
+
 	const weather = () => {
 		const success = (position) => {
+			// setLat(position.coords.latitude);
+			// setLon(position.coords.longitude);
 			const lat = position.coords.latitude;
 			const lon = position.coords.longitude;
-			const weatherURL = `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&exclude{}&appid=bf63e57f6ca8565522bf2301f33f5d33&units=imperial`;
+			const weatherURL = `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&exclude{}&appid=${apiKey}&units=imperial`;
 
 			const geoURL =
 				'https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lon}&localityLanguage=en';
@@ -100,11 +108,27 @@ export default function Home() {
 		}
 	};
 
+	const searchCity = () => {
+		const query = search;
+		const searchUrl = `https://api.openweathermap.org/data/2.5/weather?q=${query}&appid=${searchApiKey}&units=imperial`;
+
+		fetch(searchUrl)
+			.then((res) => res.json())
+			.then((data) => {
+				console.log(data);
+				console.log(data.coord.lon);
+				console.log(data.coord.lat);
+				setLat(data.coord.lat);
+				setLon(data.coord.lon);
+			});
+	};
+
 	const handleSubmit = (event) => {
 		event.preventDefault();
 		setSearch('');
 		setOpen('hidden');
-		// alert(search);
+		console.log(search);
+		searchCity();
 	};
 
 	useEffect(() => {
@@ -138,15 +162,15 @@ export default function Home() {
 				<button type="button" onClick={handleSubmit}>
 					<svg
 						xmlns="http://www.w3.org/2000/svg"
-						class="h-6 w-6"
+						className="h-6 w-6"
 						fill="none"
 						viewBox="0 0 24 24"
 						stroke="currentColor"
-						stroke-width="2"
+						strokeWidth="2"
 					>
 						<path
-							stroke-linecap="round"
-							stroke-linejoin="round"
+							strokeLinecap="round"
+							strokeLinejoin="round"
 							d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
 						/>
 					</svg>
