@@ -224,3 +224,7 @@ export default function Home() {
 
 // TO DO
 // push lat and lon to next page
+
+// Questions
+// Why does searchCity ovverride the lat and lon?
+// useEffect runs on every reload? What does the [] represent?
