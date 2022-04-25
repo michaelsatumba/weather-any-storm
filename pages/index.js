@@ -14,12 +14,13 @@ export default function Home() {
 	const [tomorrowTemp, setTomorrowTemp] = useState(null);
 	const [dayAfterTomorrowTemp, setDayAfterTomorrowTemp] = useState(null);
 	const [exercise, setExercise] = useState('');
-	const [demo, setDemo] = useState('');
 	const [search, setSearch] = useState('');
 	const [open, setOpen] = useState('hidden');
 
-	// const [lat, setLat] = useState(position.coords.latitude);
-	// const [lon, setLon] = useState(position.coords.longitude);
+	const [demo, setDemo] = useState('');
+
+	const [lat, setLat] = useState(37);
+	const [lon, setLon] = useState(-122);
 
 	const currentDate = new Date();
 
@@ -30,74 +31,69 @@ export default function Home() {
 	const apiKey = 'bf63e57f6ca8565522bf2301f33f5d33';
 	const searchApiKey = 'a53e7014f41f2cd34a0e24f9dc2c5737';
 
-	const weather = () => {
-		const success = (position) => {
-			// setLat(position.coords.latitude);
-			// setLon(position.coords.longitude);
-			const lat = position.coords.latitude;
-			const lon = position.coords.longitude;
-			const weatherURL = `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&exclude{}&appid=${apiKey}&units=imperial`;
+	const currentLocation = () => {
+		const success = (pos) => {
+			var crd = pos.coords;
+			setLat(crd.latitude);
+			setLon(crd.longitude);
 
-			const geoURL =
-				'https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lon}&localityLanguage=en';
+			const geoURL = `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lon}&localityLanguage=en`;
 
 			fetch(geoURL)
 				.then((res) => res.json())
 				.then((data) => {
+					// console.log(data);
 					setCity(data.city);
 				});
-
-			fetch(weatherURL)
-				.then((res) => res.json())
-				.then((data) => {
-					console.log(data);
-
-					let dt = data.daily[7].dt;
-
-					let date = new Date(dt * 1000);
-					const days = [
-						'Sunday',
-						'Monday',
-						'Tuesday',
-						'Wednesday',
-						'Thursday',
-						'Friday',
-						'Saturday',
-					];
-					let today = days[date.getDay()];
-					// alert(date);
-					// alert(date.getUTCDay());
-					// alert(today);
-
-					setWeatherIcon(data.current.weather[0].icon);
-					setTemp(Math.floor(data.current.temp));
-					setDescription(data.current.weather[0].main);
-					setWindSpeed(Math.floor(data.current.wind_speed));
-					setRainPercentage(data.hourly[0].pop);
-					setTomorrowTemp(Math.floor(data.hourly[23].temp));
-					setDayAfterTomorrowTemp(Math.floor(data.hourly[47].temp));
-					setWeatherIconTomorrow(data.hourly[23].weather[0].icon);
-					setDayAfterTomorrowTemp(Math.floor(data.hourly[47].temp));
-					setWeatherIconDayAfterTomorrow(data.hourly[47].weather[0].icon);
-
-					if (rainPercentage < 20) {
-						setExercise('Go take a walk');
-					} else {
-						setExercise('Stay inside and do some pushups');
-					}
-				});
 		};
 
-		const error = (showError) => {
-			setCity('I will find you');
-			setWeatherIcon('I will find you');
-			setTemp('I will find you');
-			setDescription('I will find you');
-			setWindSpeed('I will find you');
-			setRainPercentage('I will find you');
-		};
+		const error = () => {};
 
 		navigator.geolocation.getCurrentPosition(success, error);
+	};
+
+	const weather = () => {
+		const weatherURL = `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&exclude{}&appid=${apiKey}&units=imperial`;
+
+		fetch(weatherURL)
+			.then((res) => res.json())
+			.then((data) => {
+				// console.log(data);
+
+				let dt = data.daily[7].dt;
+
+				let date = new Date(dt * 1000);
+				const days = [
+					'Sunday',
+					'Monday',
+					'Tuesday',
+					'Wednesday',
+					'Thursday',
+					'Friday',
+					'Saturday',
+				];
+				let today = days[date.getDay()];
+				// alert(date);
+				// alert(date.getUTCDay());
+				// alert(today);
+
+				setWeatherIcon(data.current.weather[0].icon);
+				setTemp(Math.floor(data.current.temp));
+				setDescription(data.current.weather[0].main);
+				setWindSpeed(Math.floor(data.current.wind_speed));
+				setRainPercentage(data.hourly[0].pop);
+				setTomorrowTemp(Math.floor(data.hourly[23].temp));
+				setDayAfterTomorrowTemp(Math.floor(data.hourly[47].temp));
+				setWeatherIconTomorrow(data.hourly[23].weather[0].icon);
+				setDayAfterTomorrowTemp(Math.floor(data.hourly[47].temp));
+				setWeatherIconDayAfterTomorrow(data.hourly[47].weather[0].icon);
+
+				if (rainPercentage < 20) {
+					setExercise('Go take a walk');
+				} else {
+					setExercise('Stay inside and do some pushups');
+				}
+			});
 	};
 
 	const openSearch = () => {
@@ -115,9 +111,8 @@ export default function Home() {
 		fetch(searchUrl)
 			.then((res) => res.json())
 			.then((data) => {
-				console.log(data);
-				console.log(data.coord.lon);
-				console.log(data.coord.lat);
+				// console.log(data);
+				setCity(data.name);
 				setLat(data.coord.lat);
 				setLon(data.coord.lon);
 			});
@@ -127,13 +122,14 @@ export default function Home() {
 		event.preventDefault();
 		setSearch('');
 		setOpen('hidden');
-		console.log(search);
+		// console.log(search);
 		searchCity();
 	};
 
 	useEffect(() => {
+		currentLocation();
 		weather();
-	}, []);
+	});
 
 	return (
 		<div className="h-screen bg-teal-300">
@@ -227,5 +223,4 @@ export default function Home() {
 }
 
 // TO DO
-// Search for a city
-// City to coordinates
+// push lat and lon to next page
