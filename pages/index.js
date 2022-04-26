@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import Router from 'next/router';
 
 export default function Home() {
 	const [city, setCity] = useState(null);
@@ -88,7 +89,7 @@ export default function Home() {
 				setDayAfterTomorrowTemp(Math.floor(data.hourly[47].temp));
 				setWeatherIconDayAfterTomorrow(data.hourly[47].weather[0].icon);
 
-				if (rainPercentage < 20) {
+				if (rainPercentage < 0.2) {
 					setExercise('Go take a walk');
 				} else {
 					setExercise('Stay inside and do some pushups');
@@ -124,6 +125,23 @@ export default function Home() {
 		setOpen('hidden');
 		// console.log(search);
 		searchCity();
+		// Router.push(
+		// 	{
+		// 		pathname: '/forecast',
+		// 		query: { lat, lon },
+		// 	},
+		// 	'/forecast'
+		// );
+	};
+
+	const forecastPage = () => {
+		Router.push(
+			{
+				pathname: '/forecast',
+				query: { lat, lon, city },
+			},
+			'/forecast'
+		);
 	};
 
 	useEffect(() => {
@@ -140,9 +158,9 @@ export default function Home() {
 					<button onClick={openSearch}>🔽</button>
 				</div>
 
-				<Link href="/forecast">
-					<button>🗓️</button>
-				</Link>
+				{/* <Link href="/forecast"> */}
+				<button onClick={forecastPage}>🗓️</button>
+				{/* </Link> */}
 			</div>
 
 			<div className={`flex px-16 pt-2 space-x-2 ${open}`}>

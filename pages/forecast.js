@@ -1,8 +1,21 @@
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
+import { useRouter } from 'next/router';
 
 function Forecast() {
-	const [city, setCity] = useState(null);
+	const router = useRouter();
+
+	const {
+		query: { lat, lon, city },
+	} = router;
+
+	const props = {
+		lat,
+		lon,
+		city,
+	};
+
+	// const [city, setCity] = useState(null);
 	const [weatherIcon, setWeatherIcon] = useState('10d');
 	const [weatherIconTomorrow, setWeatherIconTomorrow] = useState('10d');
 	const [weatherIconTomorrowTwo, setWeatherIconTomorrowTwo] = useState('10d');
@@ -13,6 +26,7 @@ function Forecast() {
 	const [weatherIconTomorrowSix, setWeatherIconTomorrowSix] = useState('10d');
 
 	const [alerts, setAlerts] = useState('');
+	const [alertOrNot, setAlertOrNot] = useState('');
 	const [minutes, setMinutes] = useState('');
 	const [today, setToday] = useState('');
 	const [tomorrow, setTomorrow] = useState('');
@@ -50,102 +64,104 @@ function Forecast() {
 	const iconSmallestLinkSix = `http://openweathermap.org/img/wn/${weatherIconTomorrowSix}.png`;
 
 	const weather = () => {
-		const success = (position) => {
-			const lat = position.coords.latitude;
-			const lon = position.coords.longitude;
-			const weatherURL = `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&exclude{}&appid=bf63e57f6ca8565522bf2301f33f5d33&units=imperial`;
+		// const success = (position) => {
+		const latitude = props.lat;
+		const longitude = props.lon;
+		const weatherURL = `https://api.openweathermap.org/data/2.5/onecall?lat=${latitude}&lon=${longitude}&exclude{}&appid=bf63e57f6ca8565522bf2301f33f5d33&units=imperial`;
 
-			const geoURL =
-				'https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lon}&localityLanguage=en';
+		// const geoURL =
+		// 	'https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lon}&localityLanguage=en';
 
-			fetch(geoURL)
-				.then((res) => res.json())
-				.then((data) => {
-					setCity(data.city);
-				});
+		// fetch(geoURL)
+		// 	.then((res) => res.json())
+		// 	.then((data) => {
+		// 		setCity(data.city);
+		// 	});
 
-			fetch(weatherURL)
-				.then((res) => res.json())
-				.then((data) => {
-					console.log(data);
+		fetch(weatherURL)
+			.then((res) => res.json())
+			.then((data) => {
+				console.log(data);
 
-					if (data.alerts == null) {
-						console.log('no alerts');
-					}
-
+				if (data.alerts == null) {
+					// console.log('no alerts');
+					setAlertOrNot('No Alerts');
+				} else {
 					const todayAlerts = new Date(data.alerts[0].start);
 					const todayMinutes = todayAlerts.getMinutes();
-
-					const days = [
-						'Sunday',
-						'Monday',
-						'Tuesday',
-						'Wednesday',
-						'Thursday',
-						'Friday',
-						'Saturday',
-					];
-
-					const abDays = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
-
-					// let date = new Date(dt * 1000);
-
-					const todayTarget =
-						abDays[new Date(data.daily[0].dt * 1000).getUTCDay()];
-
-					const tomorrowTarget =
-						abDays[new Date(data.daily[1].dt * 1000).getUTCDay()];
-
-					const twoTomorrowTarget =
-						abDays[new Date(data.daily[2].dt * 1000).getUTCDay()];
-
-					const threeTomorrowTarget =
-						abDays[new Date(data.daily[3].dt * 1000).getUTCDay()];
-
-					const fourTomorrowTarget =
-						abDays[new Date(data.daily[4].dt * 1000).getUTCDay()];
-
-					const fiveTomorrowTarget =
-						abDays[new Date(data.daily[5].dt * 1000).getUTCDay()];
-
-					const sixTomorrowTarget =
-						abDays[new Date(data.daily[6].dt * 1000).getUTCDay()];
-
-					setWeatherIcon(data.current.weather[0].icon);
-					setWeatherIconTomorrow(data.daily[1].weather[0].icon);
-					setWeatherIconTomorrowTwo(data.daily[2].weather[0].icon);
-					setWeatherIconTomorrowThree(data.daily[3].weather[0].icon);
-					setWeatherIconTomorrowFour(data.daily[4].weather[0].icon);
-					setWeatherIconTomorrowFive(data.daily[5].weather[0].icon);
-					setWeatherIconTomorrowSix(data.daily[6].weather[0].icon);
-
-					setTemp(Math.floor(data.daily[0].temp.min));
-					setTomorrowTemp(Math.floor(data.daily[1].temp.min));
-					setTwoTomorrowTemp(Math.floor(data.daily[2].temp.min));
-					setThreeTomorrowTemp(Math.floor(data.daily[3].temp.min));
-					setFourTomorrowTemp(Math.floor(data.daily[4].temp.min));
-					setFiveTomorrowTemp(Math.floor(data.daily[5].temp.min));
-					setSixTomorrowTemp(Math.floor(data.daily[6].temp.min));
-
-					setTempMax(Math.floor(data.daily[0].temp.max));
-					setTomorrowTempMax(Math.floor(data.daily[1].temp.max));
-					setTwoTomorrowTempMax(Math.floor(data.daily[2].temp.max));
-					setThreeTomorrowTempMax(Math.floor(data.daily[3].temp.max));
-					setFourTomorrowTempMax(Math.floor(data.daily[4].temp.max));
-					setFiveTomorrowTempMax(Math.floor(data.daily[5].temp.max));
-					setSixTomorrowTempMax(Math.floor(data.daily[6].temp.max));
-
 					setAlerts(data.alerts[0].description);
 					setMinutes(todayMinutes);
-					setToday(todayTarget);
-					setTomorrow(tomorrowTarget);
-					setTwoTomorrow(twoTomorrowTarget);
-					setThreeTomorrow(threeTomorrowTarget);
-					setFourTomorrow(fourTomorrowTarget);
-					setFiveTomorrow(fiveTomorrowTarget);
-					setSixTomorrow(sixTomorrowTarget);
-				});
-		};
+					setAlertOrNot('minutes ago');
+				}
+
+				const days = [
+					'Sunday',
+					'Monday',
+					'Tuesday',
+					'Wednesday',
+					'Thursday',
+					'Friday',
+					'Saturday',
+				];
+
+				const abDays = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
+
+				// let date = new Date(dt * 1000);
+
+				const todayTarget =
+					abDays[new Date(data.daily[0].dt * 1000).getUTCDay()];
+
+				const tomorrowTarget =
+					abDays[new Date(data.daily[1].dt * 1000).getUTCDay()];
+
+				const twoTomorrowTarget =
+					abDays[new Date(data.daily[2].dt * 1000).getUTCDay()];
+
+				const threeTomorrowTarget =
+					abDays[new Date(data.daily[3].dt * 1000).getUTCDay()];
+
+				const fourTomorrowTarget =
+					abDays[new Date(data.daily[4].dt * 1000).getUTCDay()];
+
+				const fiveTomorrowTarget =
+					abDays[new Date(data.daily[5].dt * 1000).getUTCDay()];
+
+				const sixTomorrowTarget =
+					abDays[new Date(data.daily[6].dt * 1000).getUTCDay()];
+
+				setWeatherIcon(data.current.weather[0].icon);
+				setWeatherIconTomorrow(data.daily[1].weather[0].icon);
+				setWeatherIconTomorrowTwo(data.daily[2].weather[0].icon);
+				setWeatherIconTomorrowThree(data.daily[3].weather[0].icon);
+				setWeatherIconTomorrowFour(data.daily[4].weather[0].icon);
+				setWeatherIconTomorrowFive(data.daily[5].weather[0].icon);
+				setWeatherIconTomorrowSix(data.daily[6].weather[0].icon);
+
+				setTemp(Math.floor(data.daily[0].temp.min));
+				setTomorrowTemp(Math.floor(data.daily[1].temp.min));
+				setTwoTomorrowTemp(Math.floor(data.daily[2].temp.min));
+				setThreeTomorrowTemp(Math.floor(data.daily[3].temp.min));
+				setFourTomorrowTemp(Math.floor(data.daily[4].temp.min));
+				setFiveTomorrowTemp(Math.floor(data.daily[5].temp.min));
+				setSixTomorrowTemp(Math.floor(data.daily[6].temp.min));
+
+				setTempMax(Math.floor(data.daily[0].temp.max));
+				setTomorrowTempMax(Math.floor(data.daily[1].temp.max));
+				setTwoTomorrowTempMax(Math.floor(data.daily[2].temp.max));
+				setThreeTomorrowTempMax(Math.floor(data.daily[3].temp.max));
+				setFourTomorrowTempMax(Math.floor(data.daily[4].temp.max));
+				setFiveTomorrowTempMax(Math.floor(data.daily[5].temp.max));
+				setSixTomorrowTempMax(Math.floor(data.daily[6].temp.max));
+
+				setToday(todayTarget);
+				setTomorrow(tomorrowTarget);
+				setTwoTomorrow(twoTomorrowTarget);
+				setThreeTomorrow(threeTomorrowTarget);
+				setFourTomorrow(fourTomorrowTarget);
+				setFiveTomorrow(fiveTomorrowTarget);
+				setSixTomorrow(sixTomorrowTarget);
+			});
+		// };
 
 		const error = (showError) => {
 			setCity('I will find you');
@@ -156,11 +172,12 @@ function Forecast() {
 			setRainPercentage('I will find you');
 		};
 
-		navigator.geolocation.getCurrentPosition(success, error);
+		// navigator.geolocation.getCurrentPosition(success, error);
 	};
 
 	useEffect(() => {
 		weather();
+		console.log(props.lat);
 	}, []);
 
 	return (
@@ -184,13 +201,15 @@ function Forecast() {
 						</svg>
 					</div>
 				</Link>
-				<p className="font-bold">{city}</p>
+				<p className="font-bold">{props.city}</p>
 			</div>
 			<div className="flex flex-col rounded-lg bg-gray-300 text-black my-10 mx-10 h-28 ">
 				<div className="flex justify-end">
 					<img className="w-10" src={iconSmallLink}></img>
 				</div>
-				<p>{minutes} minutes ago</p>
+				<p>
+					{minutes} {alertOrNot}
+				</p>
 				<p className="text-xs truncate">{alerts}</p>
 			</div>
 			<div className="mb-10 px-4">
