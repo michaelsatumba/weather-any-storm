@@ -34,8 +34,9 @@ export default function Home() {
 
 	const currentLocation = () => {
 		const success = (pos) => {
-			var crd = pos.coords;
+			const crd = pos.coords;
 			setLat(crd.latitude);
+			// console.log(lat);
 			setLon(crd.longitude);
 
 			const geoURL = `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lon}&localityLanguage=en`;
@@ -43,9 +44,19 @@ export default function Home() {
 			fetch(geoURL)
 				.then((res) => res.json())
 				.then((data) => {
-					// console.log(data);
+					console.log(data);
 					setCity(data.city);
 				});
+			// const searchUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${searchApiKey}&units=imperial`;
+
+			// fetch(searchUrl)
+			// 	.then((res) => res.json())
+			// 	.then((data) => {
+			// 		// console.log(data);
+			// 		setCity(data.name);
+			// 		// setLat(data.coord.lat);
+			// 		// setLon(data.coord.lon);
+			// 	});
 		};
 
 		const error = () => {};
@@ -146,8 +157,13 @@ export default function Home() {
 
 	useEffect(() => {
 		currentLocation();
-		weather();
+		// console.log(lat);
+		// console.log(lon);
 	});
+
+	useEffect(() => {
+		weather();
+	}, [lat, lon]);
 
 	return (
 		<div className="h-screen bg-teal-300">
