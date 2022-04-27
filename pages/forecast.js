@@ -177,7 +177,7 @@ function Forecast() {
 
 	useEffect(() => {
 		weather();
-		console.log(props.lat);
+		// console.log(props.lat);
 	}, []);
 
 	return (

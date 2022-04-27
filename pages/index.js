@@ -38,26 +38,26 @@ export default function Home() {
 			setLat(crd.latitude);
 			setLon(crd.longitude);
 
-			const geoURL = `http://api.openweathermap.org/geo/1.0/reverse?lat=${crd.latitude}&lon=${crd.longitude}&limit=1&appid=${searchApiKey}`;
+			// const geoURL = `http://api.openweathermap.org/geo/1.0/reverse?lat=${crd.latitude}&lon=${crd.longitude}&limit=1&appid=${searchApiKey}`;
 
-			fetch(geoURL)
-				.then((res) => res.json())
-				.then((data) => {
-					// console.log(data);
-					console.log(data[0].name);
-					setCity(data[0].name);
-				});
-
-			// const searchUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${searchApiKey}&units=imperial`;
-
-			// fetch(searchUrl)
+			// fetch(geoURL)
 			// 	.then((res) => res.json())
 			// 	.then((data) => {
-			// 		console.log(data);
-			// 		setCity(data.name);
-			// 		// setLat(data.coord.lat);
-			// 		// setLon(data.coord.lon);
+			// 		// console.log(data);
+			// 		console.log(data[0].name);
+			// 		setCity(data[0].name);
 			// 	});
+
+			const searchUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${crd.latitude}&lon=${crd.longitude}&appid=${searchApiKey}&units=imperial`;
+
+			fetch(searchUrl)
+				.then((res) => res.json())
+				.then((data) => {
+					// console.log(data.name);
+					setCity(data.name);
+					// setLat(data.coord.lat);
+					// setLon(data.coord.lon);
+				});
 		};
 
 		const error = () => {
