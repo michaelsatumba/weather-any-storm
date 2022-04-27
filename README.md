@@ -30,7 +30,6 @@ Users should be able to:
 - Search for city and display weather.
 - Display 7 day forecast.
 
-
 ### Screenshot
 
 ![](<./public/localhost_3000_(iPhone%2012%20Pro).png>)
@@ -62,6 +61,41 @@ Basic HTML, logic, styling.
 
 I learned how to use React Hooks such as useState and useEffect (again).
 How to intereact with the weather API, getting the specific item from nested objects and arrays.
+
+I have been building this weather app and I get the API response based on my coordinates. I have another page that shows a weekly forecast for the place. Instead of using the device's location to render out the weather. I have implemented a search bar where the user can search for a city. The city will give the coordinates, giving me the necessary components to make my weather API call. I had trouble pushing the state to the next page. But a friend of mine helped, she showed me the router property in next.js. It is relatively simple and very similar to passing props in react.
+
+```Example
+import Router from 'next/router';
+const forecastPage = () => {
+Router.push(
+{
+pathname: '/forecast',
+query: { lat, lon, city },
+},
+'/forecast'
+);
+};
+
+In the other page:
+import { useRouter } from 'next/router';
+
+function Forecast() {
+const router = useRouter();
+
+const {
+query: { lat, lon, city },
+} = router;
+
+const props = {
+lat,
+lon,
+city,
+};
+
+return (
+<p className="font-bold">{props.city}</p>
+)
+```
 
 <!-- Use this section to recap over some of your major learnings while working through this project. Writing these out and providing code samples of areas you want to highlight is a great way to reinforce your own knowledge. -->
 
@@ -123,56 +157,56 @@ How to intereact with the weather API, getting the specific item from nested obj
 ```
 
 ```js
-	const weather = () => {
-		const success = (position) => {
-			const lat = position.coords.latitude;
-			const lon = position.coords.longitude;
-			const weatherURL = `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&exclude{}&appid=bf63e57f6ca8565522bf2301f33f5d33&units=imperial`;
+const weather = () => {
+	const success = (position) => {
+		const lat = position.coords.latitude;
+		const lon = position.coords.longitude;
+		const weatherURL = `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&exclude{}&appid=bf63e57f6ca8565522bf2301f33f5d33&units=imperial`;
 
-			const geoURL =
-				'https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lon}&localityLanguage=en';
+		const geoURL =
+			'https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lon}&localityLanguage=en';
 
-			fetch(geoURL)
-				.then((res) => res.json())
-				.then((data) => {
-					setCity(data.city);
-				});
+		fetch(geoURL)
+			.then((res) => res.json())
+			.then((data) => {
+				setCity(data.city);
+			});
 
-			fetch(weatherURL)
-				.then((res) => res.json())
-				.then((data) => {
-					console.log(data);
-					// console.log(currentDate);
-					// console.log(data.daily[1].dt);
-					setDemo(data.daily[1].dt);
-					console.log(new Date(demo).toString());
-					// console.log(demo.getHours());
-					// console.log(demo.toString());
+		fetch(weatherURL)
+			.then((res) => res.json())
+			.then((data) => {
+				console.log(data);
+				// console.log(currentDate);
+				// console.log(data.daily[1].dt);
+				setDemo(data.daily[1].dt);
+				console.log(new Date(demo).toString());
+				// console.log(demo.getHours());
+				// console.log(demo.toString());
 
-					setWeatherIcon(data.current.weather[0].icon);
-					setTemp(Math.floor(data.current.temp));
-					setDescription(data.current.weather[0].main);
-					setWindSpeed(Math.floor(data.current.wind_speed));
-					setRainPercentage(data.hourly[0].pop);
-					setTomorrowTemp(Math.floor(data.hourly[23].temp));
-					setDayAfterTomorrowTemp(Math.floor(data.hourly[47].temp));
-					setWeatherIconTomorrow(data.hourly[23].weather[0].icon);
-					setDayAfterTomorrowTemp(Math.floor(data.hourly[47].temp));
-					setWeatherIconDayAfterTomorrow(data.hourly[47].weather[0].icon);
-				});
-		};
-
-		const error = (showError) => {
-			setCity('I will find you');
-			setWeatherIcon('I will find you');
-			setTemp('I will find you');
-			setDescription('I will find you');
-			setWindSpeed('I will find you');
-			setRainPercentage('I will find you');
-		};
-
-		navigator.geolocation.getCurrentPosition(success, error);
+				setWeatherIcon(data.current.weather[0].icon);
+				setTemp(Math.floor(data.current.temp));
+				setDescription(data.current.weather[0].main);
+				setWindSpeed(Math.floor(data.current.wind_speed));
+				setRainPercentage(data.hourly[0].pop);
+				setTomorrowTemp(Math.floor(data.hourly[23].temp));
+				setDayAfterTomorrowTemp(Math.floor(data.hourly[47].temp));
+				setWeatherIconTomorrow(data.hourly[23].weather[0].icon);
+				setDayAfterTomorrowTemp(Math.floor(data.hourly[47].temp));
+				setWeatherIconDayAfterTomorrow(data.hourly[47].weather[0].icon);
+			});
 	};
+
+	const error = (showError) => {
+		setCity('I will find you');
+		setWeatherIcon('I will find you');
+		setTemp('I will find you');
+		setDescription('I will find you');
+		setWindSpeed('I will find you');
+		setRainPercentage('I will find you');
+	};
+
+	navigator.geolocation.getCurrentPosition(success, error);
+};
 ```
 
 <!-- If you want more help with writing markdown, we'd recommend checking out [The Markdown Guide](https://www.markdownguide.org/) to learn more. -->
