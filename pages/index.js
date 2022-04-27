@@ -100,7 +100,7 @@ export default function Home() {
 				setDayAfterTomorrowTemp(Math.floor(data.hourly[47].temp));
 				setWeatherIconDayAfterTomorrow(data.hourly[47].weather[0].icon);
 
-				if (rainPercentage < 0.2) {
+				if (rainPercentage > 0.2) {
 					setExercise('Go take a walk');
 				} else {
 					setExercise('Stay inside and do some pushups');
