@@ -181,7 +181,7 @@ function Forecast() {
 	}, []);
 
 	return (
-		<div className="h-screen bg-orange-400 text-white">
+		<div className="min-h-screen bg-orange-400 text-white">
 			<div className="flex space-x-32 pt-16">
 				<Link href="/">
 					<div className="px-4">

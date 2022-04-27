@@ -18,8 +18,6 @@ export default function Home() {
 	const [search, setSearch] = useState('');
 	const [open, setOpen] = useState('hidden');
 
-	const [demo, setDemo] = useState('');
-
 	const [lat, setLat] = useState(37);
 	const [lon, setLon] = useState(-122);
 
@@ -35,31 +33,36 @@ export default function Home() {
 	const currentLocation = () => {
 		const success = (pos) => {
 			const crd = pos.coords;
+			console.log(crd.latitude);
+			console.log(crd.longitude);
 			setLat(crd.latitude);
-			// console.log(lat);
 			setLon(crd.longitude);
 
-			const geoURL = `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lon}&localityLanguage=en`;
+			const geoURL = `http://api.openweathermap.org/geo/1.0/reverse?lat=${crd.latitude}&lon=${crd.longitude}&limit=1&appid=${searchApiKey}`;
 
 			fetch(geoURL)
 				.then((res) => res.json())
 				.then((data) => {
-					console.log(data);
-					setCity(data.city);
+					// console.log(data);
+					console.log(data[0].name);
+					setCity(data[0].name);
 				});
+
 			// const searchUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${searchApiKey}&units=imperial`;
 
 			// fetch(searchUrl)
 			// 	.then((res) => res.json())
 			// 	.then((data) => {
-			// 		// console.log(data);
+			// 		console.log(data);
 			// 		setCity(data.name);
 			// 		// setLat(data.coord.lat);
 			// 		// setLon(data.coord.lon);
 			// 	});
 		};
 
-		const error = () => {};
+		const error = () => {
+			alert('error');
+		};
 
 		navigator.geolocation.getCurrentPosition(success, error);
 	};
@@ -70,7 +73,7 @@ export default function Home() {
 		fetch(weatherURL)
 			.then((res) => res.json())
 			.then((data) => {
-				// console.log(data);
+				console.log(data);
 
 				let dt = data.daily[7].dt;
 
@@ -100,7 +103,7 @@ export default function Home() {
 				setDayAfterTomorrowTemp(Math.floor(data.hourly[47].temp));
 				setWeatherIconDayAfterTomorrow(data.hourly[47].weather[0].icon);
 
-				if (rainPercentage > 0.2) {
+				if (data.hourly[0].pop < 0.2) {
 					setExercise('Go take a walk');
 				} else {
 					setExercise('Stay inside and do some pushups');
@@ -136,13 +139,6 @@ export default function Home() {
 		setOpen('hidden');
 		// console.log(search);
 		searchCity();
-		// Router.push(
-		// 	{
-		// 		pathname: '/forecast',
-		// 		query: { lat, lon },
-		// 	},
-		// 	'/forecast'
-		// );
 	};
 
 	const forecastPage = () => {
@@ -157,16 +153,14 @@ export default function Home() {
 
 	useEffect(() => {
 		currentLocation();
-		// console.log(lat);
-		// console.log(lon);
-	});
+	}, []);
 
 	useEffect(() => {
 		weather();
 	}, [lat, lon]);
 
 	return (
-		<div className="h-screen bg-teal-300">
+		<div className="min-h-screen bg-teal-300">
 			<div className="flex justify-around pt-16">
 				<div className="flex space-x-2">
 					<p>📍</p>
