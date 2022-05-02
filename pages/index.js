@@ -22,6 +22,7 @@ export default function Home() {
 	const [lon, setLon] = useState(-122);
 
 	const [unit, setUnit] = useState('imperial');
+	const [windSpeedUnit, setWindSpeedUnit] = useState('mph');
 
 	const currentDate = new Date();
 
@@ -50,7 +51,7 @@ export default function Home() {
 			// 		setCity(data[0].name);
 			// 	});
 
-			const searchUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${crd.latitude}&lon=${crd.longitude}&appid=${searchApiKey}&units=imperial`;
+			const searchUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${crd.latitude}&lon=${crd.longitude}&appid=${searchApiKey}`;
 
 			fetch(searchUrl)
 				.then((res) => res.json())
@@ -156,11 +157,13 @@ export default function Home() {
 	const imperial = () => {
 		// alert('click');
 		setUnit('imperial');
+		setWindSpeedUnit('mph');
 	};
 
 	const metric = () => {
 		// alert('click');
 		setUnit('metric');
+		setWindSpeedUnit('ms');
 	};
 
 	useEffect(() => {
@@ -226,7 +229,9 @@ export default function Home() {
 				<p className="text-xl">{description}</p>
 				<p className="text-7xl">{temp}°</p>
 				<div className="flex space-x-4">
-					<p className="text-xl">🌬️&nbsp;&nbsp;&nbsp;{windSpeed} mph</p>
+					<p className="text-xl">
+						🌬️&nbsp;&nbsp;&nbsp;{windSpeed} {windSpeedUnit}
+					</p>
 					<p className="text-xl">
 						💧&nbsp;&nbsp;&nbsp;{Math.floor(rainPercentage * 100)}%
 					</p>
