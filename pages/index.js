@@ -147,7 +147,7 @@ export default function Home() {
 		Router.push(
 			{
 				pathname: '/forecast',
-				query: { lat, lon, city },
+				query: { lat, lon, city, unit },
 			},
 			'/forecast'
 		);

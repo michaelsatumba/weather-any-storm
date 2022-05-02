@@ -6,13 +6,14 @@ function Forecast() {
 	const router = useRouter();
 
 	const {
-		query: { lat, lon, city },
+		query: { lat, lon, city, unit },
 	} = router;
 
 	const props = {
 		lat,
 		lon,
 		city,
+		unit,
 	};
 
 	// const [city, setCity] = useState(null);
@@ -67,7 +68,7 @@ function Forecast() {
 		// const success = (position) => {
 		const latitude = props.lat;
 		const longitude = props.lon;
-		const weatherURL = `https://api.openweathermap.org/data/2.5/onecall?lat=${latitude}&lon=${longitude}&exclude{}&appid=bf63e57f6ca8565522bf2301f33f5d33&units=imperial`;
+		const weatherURL = `https://api.openweathermap.org/data/2.5/onecall?lat=${latitude}&lon=${longitude}&exclude{}&appid=bf63e57f6ca8565522bf2301f33f5d33&units=${props.unit}`;
 
 		// const geoURL =
 		// 	'https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lon}&localityLanguage=en';
