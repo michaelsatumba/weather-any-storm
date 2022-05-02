@@ -24,7 +24,9 @@ export default function Home() {
 	const [unit, setUnit] = useState('imperial');
 	const [windSpeedUnit, setWindSpeedUnit] = useState('mph');
 
-	const currentDate = new Date();
+	const initialCurrentDate = new Date();
+
+	const [currentDate, setCurrentDate] = useState(initialCurrentDate);
 
 	const iconLink = `http://openweathermap.org/img/wn/${weatherIcon}@4x.png`;
 	const iconLinkTomorrow = `http://openweathermap.org/img/wn/${weatherIconTomorrow}@4x.png`;
@@ -89,7 +91,9 @@ export default function Home() {
 				setDayAfterTomorrowTemp(Math.floor(data.hourly[47].temp));
 				setWeatherIconDayAfterTomorrow(data.hourly[47].weather[0].icon);
 
-				// console.log(data.timezone);
+				const currentDateTest = new Date(data.current.dt * 1000);
+				// alert(currentDateTest.getHours());
+				setCurrentDate(currentDateTest);
 
 				if (data.hourly[0].pop < 0.2) {
 					setExercise('Go take a walk');
@@ -109,7 +113,7 @@ export default function Home() {
 
 	const searchCity = () => {
 		const query = search;
-		const searchUrl = `https://api.openweathermap.org/data/2.5/weather?q=${query}&appid=${searchApiKey}&units=imperial`;
+		const searchUrl = `https://api.openweathermap.org/data/2.5/weather?q=${query}&appid=${searchApiKey}`;
 
 		fetch(searchUrl)
 			.then((res) => res.json())
