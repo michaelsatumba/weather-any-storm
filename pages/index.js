@@ -45,16 +45,6 @@ export default function Home() {
 			setLat(crd.latitude);
 			setLon(crd.longitude);
 
-			// const geoURL = `http://api.openweathermap.org/geo/1.0/reverse?lat=${crd.latitude}&lon=${crd.longitude}&limit=1&appid=${searchApiKey}`;
-
-			// fetch(geoURL)
-			// 	.then((res) => res.json())
-			// 	.then((data) => {
-			// 		// console.log(data);
-			// 		console.log(data[0].name);
-			// 		setCity(data[0].name);
-			// 	});
-
 			const searchUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${crd.latitude}&lon=${crd.longitude}&appid=${searchApiKey}`;
 
 			fetch(searchUrl)
@@ -62,8 +52,8 @@ export default function Home() {
 				.then((data) => {
 					// console.log(data.name);
 					setCity(data.name);
-					// setLat(data.coord.lat);
-					// setLon(data.coord.lon);
+					setLat(data.coord.lat);
+					setLon(data.coord.lon);
 				});
 		};
 
@@ -99,6 +89,10 @@ export default function Home() {
 				setCurrentDate(currentDateTest);
 				setCurrentDate1(currentDateTest1);
 				setCurrentDate2(currentDateTest2);
+
+				// const hour = data.hourly[0].dt;
+				// console.log(hour);
+				//1651532400
 
 				// const test = new Date(data.hourly[1].dt * 1000).getUTCHours();
 				// console.log(test);
