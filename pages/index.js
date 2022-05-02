@@ -78,23 +78,6 @@ export default function Home() {
 			.then((data) => {
 				console.log(data);
 
-				let dt = data.daily[7].dt;
-
-				let date = new Date(dt * 1000);
-				const days = [
-					'Sunday',
-					'Monday',
-					'Tuesday',
-					'Wednesday',
-					'Thursday',
-					'Friday',
-					'Saturday',
-				];
-				let today = days[date.getDay()];
-				// alert(date);
-				// alert(date.getUTCDay());
-				// alert(today);
-
 				setWeatherIcon(data.current.weather[0].icon);
 				setTemp(Math.floor(data.current.temp));
 				setDescription(data.current.weather[0].main);
@@ -105,6 +88,8 @@ export default function Home() {
 				setWeatherIconTomorrow(data.hourly[23].weather[0].icon);
 				setDayAfterTomorrowTemp(Math.floor(data.hourly[47].temp));
 				setWeatherIconDayAfterTomorrow(data.hourly[47].weather[0].icon);
+
+				// console.log(data.timezone);
 
 				if (data.hourly[0].pop < 0.2) {
 					setExercise('Go take a walk');
