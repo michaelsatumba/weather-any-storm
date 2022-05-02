@@ -27,6 +27,8 @@ export default function Home() {
 	const initialCurrentDate = new Date();
 
 	const [currentDate, setCurrentDate] = useState(initialCurrentDate);
+	const [currentDate1, setCurrentDate1] = useState(initialCurrentDate);
+	const [currentDate2, setCurrentDate2] = useState(initialCurrentDate);
 
 	const iconLink = `http://openweathermap.org/img/wn/${weatherIcon}@4x.png`;
 	const iconLinkTomorrow = `http://openweathermap.org/img/wn/${weatherIconTomorrow}@4x.png`;
@@ -91,9 +93,15 @@ export default function Home() {
 				setDayAfterTomorrowTemp(Math.floor(data.hourly[47].temp));
 				setWeatherIconDayAfterTomorrow(data.hourly[47].weather[0].icon);
 
-				const currentDateTest = new Date(data.current.dt * 1000);
-				// alert(currentDateTest.getHours());
+				const currentDateTest = new Date(data.hourly[0].dt * 1000);
+				const currentDateTest1 = new Date(data.hourly[1].dt * 1000);
+				const currentDateTest2 = new Date(data.hourly[2].dt * 1000);
 				setCurrentDate(currentDateTest);
+				setCurrentDate1(currentDateTest1);
+				setCurrentDate2(currentDateTest2);
+
+				// const test = new Date(data.hourly[1].dt * 1000).getUTCHours();
+				// console.log(test);
 
 				if (data.hourly[0].pop < 0.2) {
 					setExercise('Go take a walk');
@@ -239,7 +247,7 @@ export default function Home() {
 				<div>
 					<p className="pb-5">Tomorrow</p>
 					<div className="bg-teal-100 rounded-lg flex flex-col items-center">
-						<p className="text-gray-500">{currentDate.getHours()}00</p>
+						<p className="text-gray-500">{currentDate1.getHours()}00</p>
 						<img className="" src={iconLinkTomorrow}></img>
 						<p className="text-lg">{tomorrowTemp}°</p>
 					</div>
@@ -247,7 +255,7 @@ export default function Home() {
 				<div>
 					<p className="pb-5">Day After</p>
 					<div className="bg-teal-100 rounded-lg flex flex-col items-center">
-						<p className="text-gray-500">{currentDate.getHours()}00</p>
+						<p className="text-gray-500">{currentDate2.getHours()}00</p>
 						<img className="" src={iconLinkDayAfterTomorrow}></img>
 						<p className="text-lg">{dayAfterTomorrowTemp}°</p>
 					</div>
