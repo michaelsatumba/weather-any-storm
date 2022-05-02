@@ -21,6 +21,8 @@ export default function Home() {
 	const [lat, setLat] = useState(37);
 	const [lon, setLon] = useState(-122);
 
+	const [unit, setUnit] = useState('imperial');
+
 	const currentDate = new Date();
 
 	const iconLink = `http://openweathermap.org/img/wn/${weatherIcon}@4x.png`;
@@ -68,7 +70,7 @@ export default function Home() {
 	};
 
 	const weather = () => {
-		const weatherURL = `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&exclude{}&appid=${apiKey}&units=imperial`;
+		const weatherURL = `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&exclude{}&appid=${apiKey}&units=${unit}`;
 
 		fetch(weatherURL)
 			.then((res) => res.json())
@@ -151,13 +153,23 @@ export default function Home() {
 		);
 	};
 
+	const imperial = () => {
+		// alert('click');
+		setUnit('imperial');
+	};
+
+	const metric = () => {
+		// alert('click');
+		setUnit('metric');
+	};
+
 	useEffect(() => {
 		currentLocation();
 	}, []);
 
 	useEffect(() => {
 		weather();
-	}, [lat, lon]);
+	}, [lat, lon, unit]);
 
 	return (
 		<div className="min-h-screen bg-teal-300">
@@ -171,6 +183,11 @@ export default function Home() {
 				{/* <Link href="/forecast"> */}
 				<button onClick={forecastPage}>🗓️</button>
 				{/* </Link> */}
+				<div className="flex">
+					<button onClick={imperial}>F°</button>
+					<p>&nbsp;/&nbsp;</p>
+					<button onClick={metric}>C°</button>
+				</div>
 			</div>
 
 			<div className={`flex px-16 pt-2 space-x-2 ${open}`}>
