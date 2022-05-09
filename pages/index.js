@@ -56,7 +56,8 @@ export default function Home() {
 		};
 
 		const error = () => {
-			alert('error');
+			// alert('error');
+			alert(lat, lon);
 		};
 
 		navigator.geolocation.getCurrentPosition(success, error);
@@ -276,10 +277,3 @@ export default function Home() {
 		</div>
 	);
 }
-
-// TO DO
-// push lat and lon to next page
-
-// Questions
-// Why does searchCity ovverride the lat and lon?
-// useEffect runs on every reload? What does the [] represent?
