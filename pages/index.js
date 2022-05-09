@@ -3,7 +3,7 @@ import Link from 'next/link';
 import Router from 'next/router';
 
 export default function Home() {
-	const [city, setCity] = useState(null);
+	const [city, setCity] = useState('San Francisco');
 	const [weatherIcon, setWeatherIcon] = useState('10d');
 	const [weatherIconTomorrow, setWeatherIconTomorrow] = useState('10d');
 	const [weatherIconDayAfterTomorrow, setWeatherIconDayAfterTomorrow] =
