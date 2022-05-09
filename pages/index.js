@@ -75,11 +75,10 @@ export default function Home() {
 				setDescription(data.current.weather[0].main);
 				setWindSpeed(Math.floor(data.current.wind_speed));
 				setRainPercentage(data.hourly[0].pop);
-				setTomorrowTemp(Math.floor(data.hourly[23].temp));
-				setDayAfterTomorrowTemp(Math.floor(data.hourly[47].temp));
-				setWeatherIconTomorrow(data.hourly[23].weather[0].icon);
-				setDayAfterTomorrowTemp(Math.floor(data.hourly[47].temp));
-				setWeatherIconDayAfterTomorrow(data.hourly[47].weather[0].icon);
+				setTomorrowTemp(Math.floor(data.hourly[2].temp));
+				setDayAfterTomorrowTemp(Math.floor(data.hourly[3].temp));
+				setWeatherIconTomorrow(data.hourly[2].weather[0].icon);
+				setWeatherIconDayAfterTomorrow(data.hourly[3].weather[0].icon);
 
 				const currentDateTest = new Date(
 					data.hourly[0].dt * 1000
@@ -245,7 +244,7 @@ export default function Home() {
 
 			<div className="flex space-x-4 mt-10 px-4">
 				<div>
-					<p className="pb-5">Today</p>
+					{/* <p className="pb-5">Today</p> */}
 					<div className="bg-teal-100 rounded-lg flex flex-col items-center">
 						<p className="text-gray-500">{currentDate}</p>
 						{/* {json.stringify(currentDate)} */}
@@ -254,7 +253,7 @@ export default function Home() {
 					</div>
 				</div>
 				<div>
-					<p className="pb-5">Tomorrow</p>
+					{/* <p className="pb-5">Tomorrow</p> */}
 					<div className="bg-teal-100 rounded-lg flex flex-col items-center">
 						<p className="text-gray-500">{currentDate1}</p>
 						<img className="" src={iconLinkTomorrow}></img>
@@ -262,7 +261,7 @@ export default function Home() {
 					</div>
 				</div>
 				<div>
-					<p className="pb-5">Day After</p>
+					{/* <p className="pb-5">Day After</p> */}
 					<div className="bg-teal-100 rounded-lg flex flex-col items-center">
 						<p className="text-gray-500">{currentDate2}</p>
 						<img className="" src={iconLinkDayAfterTomorrow}></img>
