@@ -18,8 +18,8 @@ export default function Home() {
 	const [search, setSearch] = useState('');
 	const [open, setOpen] = useState('hidden');
 
-	const [lat, setLat] = useState(37);
-	const [lon, setLon] = useState(-122);
+	const [lat, setLat] = useState(37.7749);
+	const [lon, setLon] = useState(-122.4194);
 
 	const [unit, setUnit] = useState('imperial');
 	const [windSpeedUnit, setWindSpeedUnit] = useState('mph');
@@ -52,12 +52,13 @@ export default function Home() {
 					setCity(data.name);
 					setLat(data.coord.lat);
 					setLon(data.coord.lon);
+					// alert(`${data.coord.lat} ${data.coord.lon}`);
 				});
 		};
 
 		const error = () => {
 			// alert('error');
-			alert(lat, lon);
+			// alert(lat + lon);
 		};
 
 		navigator.geolocation.getCurrentPosition(success, error);
