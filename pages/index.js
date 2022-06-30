@@ -244,31 +244,23 @@ export default function Home() {
 				</div>
 			</div>
 
-			<div className="flex space-x-4 mt-10 px-4">
-				<div>
-					{/* <p className="pb-5">Today</p> */}
-					<div className="bg-teal-100 rounded-lg flex flex-col items-center">
-						<p className="text-gray-500">{currentDate}</p>
-						{/* {json.stringify(currentDate)} */}
-						<img className="" src={iconLink}></img>
-						<p className="text-lg">{temp}°</p>
-					</div>
+			<div className="flex justify-center space-x-4 mt-10 px-4">
+				<div className="bg-teal-100 rounded-lg flex flex-col items-center">
+					<p className="text-gray-500">{currentDate}</p>
+					<img className="" src={iconLink}></img>
+					<p className="text-lg">{temp}°</p>
 				</div>
-				<div>
-					{/* <p className="pb-5">Tomorrow</p> */}
-					<div className="bg-teal-100 rounded-lg flex flex-col items-center">
-						<p className="text-gray-500">{currentDate1}</p>
-						<img className="" src={iconLinkTomorrow}></img>
-						<p className="text-lg">{tomorrowTemp}°</p>
-					</div>
+
+				<div className="bg-teal-100 rounded-lg flex flex-col items-center">
+					<p className="text-gray-500">{currentDate1}</p>
+					<img className="" src={iconLinkTomorrow}></img>
+					<p className="text-lg">{tomorrowTemp}°</p>
 				</div>
-				<div>
-					{/* <p className="pb-5">Day After</p> */}
-					<div className="bg-teal-100 rounded-lg flex flex-col items-center">
-						<p className="text-gray-500">{currentDate2}</p>
-						<img className="" src={iconLinkDayAfterTomorrow}></img>
-						<p className="text-lg">{dayAfterTomorrowTemp}°</p>
-					</div>
+
+				<div className="bg-teal-100 rounded-lg flex flex-col items-center">
+					<p className="text-gray-500">{currentDate2}</p>
+					<img className="" src={iconLinkDayAfterTomorrow}></img>
+					<p className="text-lg">{dayAfterTomorrowTemp}°</p>
 				</div>
 			</div>
 
